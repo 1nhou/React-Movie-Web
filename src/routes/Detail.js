@@ -4,15 +4,16 @@ import Movie from "../components/movie";
 
 function Detail(){
     const [loading, setLoading] = useState(true)
-    const [movies, setMovies] = useState([])
+    const [movies, setMovies] = useState({})
     const {id} = useParams()
     const getMovies = async() => {
         const json = await ( await fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}`)).json()
-        setMovies(json.data.movies)
+        setMovies(json.data.movie)
         setLoading(false)
-        console.log(json)
 
+        
     }
+    console.log(movies)
     
 
 
@@ -26,13 +27,15 @@ function Detail(){
             {loading ? <h1>Loading...</h1>:
             <div>
                 <h1>Detail Page</h1>
-                {movies&&movies.map((movie) => <Movie 
-                key={movie.id} 
-                id={movie.id}
-                coverImg={movie.medium_cover_image} 
-                title={movie.title} 
-                summary={movie.summary} 
-                genres={movie.genres} />)}
+                <hr/>
+                <Movie
+                key={movies.id}
+                id={movies.id}
+                year={movies.year}
+                coverImg={movies.large_cover_image}
+                title={movies.title}
+                summary={movies.description_intro}
+                genres={movies.genres} />
             </div>}
         </div>
     )
